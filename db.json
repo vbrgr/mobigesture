@@ -1,7 +1,17 @@
 {
     "users": [
       {
-        "userid": 1,
+        "id": 1,
+        "username": "test",
+        "email": "admin@gmail.com"
+      },
+      {
+        "id": 2,
+        "username": "test",
+        "email": "admin@gmail.com"
+      },
+      {
+        "id": 3,
         "username": "test",
         "email": "admin@gmail.com"
       }
