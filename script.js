@@ -48,7 +48,7 @@ function insertNewRecord(data) {
 fetchall();
 function fetchall(){
 
-    fetch('http://my-json-server.typicode.com/vbrgr/mobigesture/users')
+    fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users')
     .then((response) => response.json())
      .then((json) => {  for (let index = 0; index < json.length; index++) {
         var table = document.getElementById("table").getElementsByTagName('tbody')[0];
@@ -81,7 +81,7 @@ function onEdit(td) {
     document.getElementById("email").value = selectedRow.cells[2].innerHTML;
 }
 function updateRecord(formData) {
-    fetch('http://my-json-server.typicode.com/vbrgr/mobigesture/users/'+formData.id, {
+    fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users/'+formData.id, {
   method: 'PUT',
   body: JSON.stringify({
     id: formData.id,
@@ -93,10 +93,11 @@ function updateRecord(formData) {
   },
 })
   .then((response) => response.json())
-  .then((json) =>{
-    selectedRow.cells[0].innerHTML = json.id;
-    selectedRow.cells[1].innerHTML = json.username;
-    selectedRow.cells[2].innerHTML = json.email;
+  .then((res) =>{
+    console.log(res);
+    selectedRow.cells[0].innerHTML = res.id;
+    selectedRow.cells[1].innerHTML = res.username;
+    selectedRow.cells[2].innerHTML = res.email; 
   })
     
 }
