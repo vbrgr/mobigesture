@@ -12,7 +12,7 @@ function onFormSubmit() {
 
 function readFormData() {
     var formData = {};
-    formData["userid"] = document.getElementById("userid").value;
+    formData["id"] = document.getElementById("id").value;
     formData["username"] = document.getElementById("username").value;
     formData["email"] = document.getElementById("email").value;
     return formData;
@@ -21,9 +21,13 @@ function readFormData() {
 function insertNewRecord(data) {
     var table = document.getElementById("table").getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(table.length);
-    fetch('https://jsonplaceholder.typicode.com/posts', {
+    fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users', {
   method: 'POST',
-  body: JSON.stringify(data),
+  body: JSON.stringify({
+      id:data.id,
+      username:data.username,
+      email:data.email  
+  }),
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
   },
@@ -31,7 +35,7 @@ function insertNewRecord(data) {
   .then((response) => response.json())
   .then((json) => console.log(json))
     cell1 = newRow.insertCell(0);
-    cell1.innerHTML = data.userid;
+    cell1.innerHTML = data.id;
     cell2 = newRow.insertCell(1);
     cell2.innerHTML = data.username;
     cell3 = newRow.insertCell(2);
@@ -40,15 +44,15 @@ function insertNewRecord(data) {
     cell4.innerHTML = `<a onClick="onEdit(this)">Edit</a>
                        <a onClick="onDelete(this)">Delete</a>`;
 }
-function fetch(){
+function fetchall(){
 var table = document.getElementById("table").getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(table.length);
-    fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users')
+    fetch('http://my-json-server.typicode.com/vbrgr/mobigesture/users')
     .then((response) => response.json())
     .then((json) => { for (let index = 0; index < json.length; index++) {
         const element = json[index];        
     cell1 = newRow.insertCell(0);
-    cell1.innerHTML = element.userid;
+    cell1.innerHTML = element.id;
     cell2 = newRow.insertCell(1);
     cell2.innerHTML = element.username;
     cell3 = newRow.insertCell(2);
@@ -61,7 +65,7 @@ var table = document.getElementById("table").getElementsByTagName('tbody')[0];
     
 }
 function resetForm() {
-    document.getElementById("userid").value = "";
+    document.getElementById("id").value = "";
     document.getElementById("username").value = "";
     document.getElementById("email").value = "";
     selectedRow = null;
@@ -69,12 +73,12 @@ function resetForm() {
 
 function onEdit(td) {
     selectedRow = td.parentElement.parentElement;
-    document.getElementById("userid").value = selectedRow.cells[0].innerHTML;
+    document.getElementById("id").value = selectedRow.cells[0].innerHTML;
     document.getElementById("username").value = selectedRow.cells[1].innerHTML;
     document.getElementById("email").value = selectedRow.cells[2].innerHTML;
 }
 function updateRecord(formData) {
-    selectedRow.cells[0].innerHTML = formData.userid;
+    selectedRow.cells[0].innerHTML = formData.id;
     selectedRow.cells[1].innerHTML = formData.username;
     selectedRow.cells[2].innerHTML = formData.email;
 }
