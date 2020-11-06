@@ -1,16 +1,16 @@
 var selectedRow = null
 
-function onFormSubmit() {
-        var formData = readFormData();
+function onUserSubmit() {
+        var formData = readUserData();
         if (selectedRow == null)
-            insertNewRecord(formData);
+            insertUser(formData);
         else
-            updateRecord(formData);
+            updateUser(formData);
         resetForm();
     
 }
 
-function readFormData() {
+function readUserData() {
     var formData = {};
     formData["id"] = document.getElementById("id").value;
     formData["username"] = document.getElementById("username").value;
@@ -18,7 +18,7 @@ function readFormData() {
     return formData;
 }
 //fetch();
-function insertNewRecord(data) {
+function insertUser(data) {
     var table = document.getElementById("table").getElementsByTagName('tbody')[0];
     var newRow = table.insertRow(table.length);
     fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users', {
@@ -61,8 +61,7 @@ function fetchall(){
     cell3 = newRow.insertCell(2);
     cell3.innerHTML = element.email;
     cell4 = newRow.insertCell(3);
-    cell4.innerHTML = `<a onClick="onEdit(this)">Edit</a>
-                       <a onClick="onDelete(this)">Delete</a>`;
+    cell4.innerHTML = '<a onClick="onEdit(this)">Edit</a><a onClick="onDelete(this,'+element.id+')">Delete</a>';
     } 
     }) 
     
@@ -80,7 +79,7 @@ function onEdit(td) {
     document.getElementById("username").value = selectedRow.cells[1].innerHTML;
     document.getElementById("email").value = selectedRow.cells[2].innerHTML;
 }
-function updateRecord(formData) {
+function updateUser(formData) {
     fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users/'+formData.id, {
   method: 'PUT',
   body: JSON.stringify({
@@ -102,9 +101,12 @@ function updateRecord(formData) {
     
 }
 
-function onDelete(td) {
+function onDelete(td,id) {
     if (confirm('Are you sure to delete this record ?')) {
         row = td.parentElement.parentElement;
+        fetch('https://my-json-server.typicode.com/vbrgr/mobigesture/users/'+id, {
+          method: 'DELETE',
+        })
         document.getElementById("table").deleteRow(row.rowIndex);
         resetForm();
     }
