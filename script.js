@@ -33,23 +33,26 @@ function insertNewRecord(data) {
   },
 })
   .then((response) => response.json())
-  .then((json) => console.log(json))
+  .then((json) => {
     cell1 = newRow.insertCell(0);
-    cell1.innerHTML = data.id;
+    cell1.innerHTML = json.id;
     cell2 = newRow.insertCell(1);
-    cell2.innerHTML = data.username;
+    cell2.innerHTML = json.username;
     cell3 = newRow.insertCell(2);
-    cell3.innerHTML = data.email;
+    cell3.innerHTML = json.email;
     cell4 = newRow.insertCell(3);
     cell4.innerHTML = `<a onClick="onEdit(this)">Edit</a>
                        <a onClick="onDelete(this)">Delete</a>`;
+  })
 }
+fetchall();
 function fetchall(){
-var table = document.getElementById("table").getElementsByTagName('tbody')[0];
-    var newRow = table.insertRow(table.length);
+
     fetch('http://my-json-server.typicode.com/vbrgr/mobigesture/users')
     .then((response) => response.json())
-    .then((json) => { for (let index = 0; index < json.length; index++) {
+     .then((json) => {  for (let index = 0; index < json.length; index++) {
+        var table = document.getElementById("table").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.length);
         const element = json[index];        
     cell1 = newRow.insertCell(0);
     cell1.innerHTML = element.id;
@@ -60,8 +63,8 @@ var table = document.getElementById("table").getElementsByTagName('tbody')[0];
     cell4 = newRow.insertCell(3);
     cell4.innerHTML = `<a onClick="onEdit(this)">Edit</a>
                        <a onClick="onDelete(this)">Delete</a>`;
-    }
-    })
+    } 
+    }) 
     
 }
 function resetForm() {
@@ -78,9 +81,24 @@ function onEdit(td) {
     document.getElementById("email").value = selectedRow.cells[2].innerHTML;
 }
 function updateRecord(formData) {
-    selectedRow.cells[0].innerHTML = formData.id;
-    selectedRow.cells[1].innerHTML = formData.username;
-    selectedRow.cells[2].innerHTML = formData.email;
+    fetch('http://my-json-server.typicode.com/vbrgr/mobigesture/users/'+formData.id, {
+  method: 'PUT',
+  body: JSON.stringify({
+    id: formData.id,
+    username: formData.username,
+    email: formData.email,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((json) =>{
+    selectedRow.cells[0].innerHTML = json.id;
+    selectedRow.cells[1].innerHTML = json.username;
+    selectedRow.cells[2].innerHTML = json.email;
+  })
+    
 }
 
 function onDelete(td) {
